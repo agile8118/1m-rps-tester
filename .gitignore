@@ -3,3 +3,6 @@ dist/
 .env
 .DS_Store
 .vscode/
+results
+
+results*.txt

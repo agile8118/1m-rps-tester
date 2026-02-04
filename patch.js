@@ -1,3 +1,13 @@
+/*
+Running this file is like running the following autocannon command:
+
+autocannon -m PATCH \
+  --connections 200 --duration 20 --pipelining 20 --workers 60 \
+  -H "Content-Type: application/json" \
+  -b '{"foo1":"test","foo2":"test","foo3":"test","foo4":"test","foo5":"test","foo6":"test","foo7":"test","foo8":"test","foo9":"test","foo10":"test"}' \
+  "http://ec2-3-149-144-133.us-east-2.compute.amazonaws.com:3002/update-something/123/john_doe?value1=abc&value2=xyz"
+*/
+
 const autocannon = require("autocannon");
 const fs = require("fs");
 const { Writable } = require("stream");
@@ -20,10 +30,10 @@ console.log(
 const config = {
   url: `http://${dns}:${port}/update-something/123/john_doe?value1=abc&value2=xyz`,
   method: "PATCH",
-  connections,
-  workers,
-  pipelining,
-  duration,
+  connections: connections,
+  workers: workers,
+  pipelining: pipelining,
+  duration: duration,
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     foo1: "test",
@@ -67,13 +77,3 @@ autocannon(config, (err, result) => {
 
   console.log("Test completed. Results saved to output.json and results.txt");
 });
-
-/*
-
-autocannon -m PATCH \
-  --connections 200 --duration 20 --pipelining 20 --workers 60 \
-  -H "Content-Type: application/json" \
-  -b '{"foo1":"test","foo2":"test","foo3":"test","foo4":"test","foo5":"test","foo6":"test","foo7":"test","foo8":"test","foo9":"test","foo10":"test"}' \
-  "http://ec2-3-149-144-133.us-east-2.compute.amazonaws.com:3002/update-something/123/john_doe?value1=abc&value2=xyz"
-
-*/
